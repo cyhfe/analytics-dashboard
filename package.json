@@ -1,10 +1,12 @@
 {
   "name": "@cyhfe/cli-test",
   "version": "1.0.3",
-  "bin": "./bin/test.js",
+  "bin": {
+    "test": "./bin/test.js"
+  },
   "scripts": {
   },
-  "keywords": ["webpack5"],
+  "keywords": ["webpack"],
   "author": "chenyuhao",
   "license": "MIT"
 }
