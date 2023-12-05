@@ -32,7 +32,7 @@ function Stats() {
   const getStats = async () => {
     try {
       const res = (await (
-        await fetch(endPoint + "/stats" + "?" + new URLSearchParams({ wid }))
+        await fetch(endPoint + "/stats?" + new URLSearchParams({ wid }))
       ).json()) as Stats;
       setStats(res);
     } catch (error) {

@@ -33,14 +33,14 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Select(
 
         <SelectPopup
           keepMounted
-          className="flex flex-col gap-y-1 p-2 w-40 min-h-[30px] max-h-[200px] overflow-auto border rounded-lg shadow-lg bg-white"
+          className="flex flex-col gap-y-1 w-40 min-h-[30px] max-h-[200px] overflow-auto no-scrollbar shadow-md bg-white"
         >
           {options.map((option) => {
             return (
               <SelectOption
                 key={option.value}
                 value={option.value}
-                className="text-left hover:bg-slate-100 px-3 py-2  data-[selected=true]:bg-sky-100 data-[selected=true]:text-sky-900 rounded-lg  "
+                className="text-left hover:bg-slate-100 px-3 py-2  data-[selected=true]:bg-slate-200 "
               >
                 {option.label}
               </SelectOption>

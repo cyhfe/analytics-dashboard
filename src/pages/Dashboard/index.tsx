@@ -2,6 +2,7 @@ import { Stats } from "./Stats";
 import { endPoint } from "../../constant";
 import * as React from "react";
 import { Select } from "../../Components/Select";
+import { Chart } from "./Chart";
 
 interface Websites {
   domain: string;
@@ -10,6 +11,7 @@ interface Websites {
 function Dashboard() {
   const [websites, setWebsites] = React.useState<Websites[]>();
   const [selectedWebsite, setSelectedWebsite] = React.useState<string>();
+  const [online, setOnline] = React.useState<number>();
 
   const getWebsites = async () => {
     const res = (await fetch(endPoint + "/websites").then((res) =>
@@ -18,9 +20,23 @@ function Dashboard() {
     setWebsites(res);
   };
 
+  const getOnline = React.useCallback(async () => {
+    if (!selectedWebsite) return;
+    const res = (await fetch(
+      endPoint + "/online?" + new URLSearchParams({ wid: selectedWebsite })
+    ).then((res) => res.json())) as {
+      onlineVisitors: number;
+    };
+    setOnline(res.onlineVisitors);
+  }, [selectedWebsite]);
+
   React.useEffect(() => {
     getWebsites();
   }, []);
+
+  React.useEffect(() => {
+    getOnline();
+  }, [getOnline]);
 
   React.useEffect(() => {
     if (websites && websites.length) {
@@ -29,13 +45,22 @@ function Dashboard() {
   }, [websites]);
 
   const options = React.useMemo(() => {
+    const websites = [
+      { id: "asd1", domain: "asdasdasd" },
+      { id: "asd2", domain: "asdasdasd" },
+      { id: "asd3", domain: "asdasdasd" },
+      { id: "asd4", domain: "asdasdasd" },
+      { id: "asd5", domain: "asdasdasd" },
+      { id: "asd6", domain: "asdasdasd" },
+    ];
+
     return websites?.map((website) => {
       return {
         value: website.id,
         label: website.domain,
       };
     });
-  }, [websites]);
+  }, []);
 
   return (
     <div className="dashboard flex flex-col gap-y-2">
@@ -47,7 +72,7 @@ function Dashboard() {
               <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </span>
             <span>
-              在线: <span className="font-medium">{websites?.length}</span>
+              在线: <span className="font-medium">{online ?? "?"}</span>
             </span>
           </div>
           <Select
@@ -61,7 +86,7 @@ function Dashboard() {
 
       <Stats />
 
-      <div></div>
+      {selectedWebsite && <Chart wid={selectedWebsite} />}
     </div>
   );
 }
