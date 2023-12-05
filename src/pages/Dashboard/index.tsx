@@ -85,10 +85,12 @@ function Dashboard() {
   // console.log(durationChartData);
 
   return (
-    <div>
+    <div className="dashboard flex flex-col gap-y-2">
       <Stats />
 
-      <div className=" border">
+      <div>asdasd</div>
+
+      {/* <div className="border">
         {count && timeSeries && (
           <LineChart
             xAxis={[{ data: timeSeries, scaleType: "time" }]}
@@ -97,11 +99,10 @@ function Dashboard() {
                 data: count,
               },
             ]}
-            width={500}
             height={300}
           />
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

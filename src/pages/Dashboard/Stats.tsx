@@ -27,20 +27,20 @@ function Stats() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-y-2">
-      <Card>
+    <div className="flex flex-col gap-y-2 sm:flex-row sm:gap-x-2 md:gap-x-4">
+      <Card className="p-4">
         <div>{stats?.uniqueVisitors ?? "??"}</div>
         <div>历史访问人数</div>
       </Card>
-      <Card>
+      <Card className="p-4">
         <div>{stats?.totalVisits ?? "??"}</div>
         <div>访问次数</div>
       </Card>
-      <Card>
+      <Card className="p-4">
         <div>{stats?.totalPageViews ?? "??"}</div>
         <div>页面浏览量</div>
       </Card>
-      <Card>
+      <Card className="p-4">
         <div>{stats?.viewsPerVisit ?? "??"}</div>
         <div>人均浏览页面</div>
       </Card>
