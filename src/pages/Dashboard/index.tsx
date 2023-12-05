@@ -3,7 +3,7 @@ import { endPoint } from "../../constant";
 import * as React from "react";
 import { Select } from "../../Components/Select";
 import { Chart } from "./Chart";
-
+import { Referrer } from "./referrer";
 interface Websites {
   domain: string;
   id: string;
@@ -79,6 +79,7 @@ function Dashboard() {
       <Stats />
 
       {selectedWebsite && <Chart wid={selectedWebsite} />}
+      {selectedWebsite && <Referrer wid={selectedWebsite} />}
     </div>
   );
 }
