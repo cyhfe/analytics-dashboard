@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "d3": "^7.8.5",
     "react": "^18.2.0",
+    "react-charts": "^3.0.0-beta.57",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.1"
   },
   "devDependencies": {
+    "@types/d3": "^7.4.3",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",

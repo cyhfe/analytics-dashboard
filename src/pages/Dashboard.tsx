@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
+import * as React from "react";
 
-const data = [
-  { title: "访问人数", value: "xx人" },
-  { title: "访问次数", value: "xx人" },
-  { title: "全页面浏览量", value: "xx人" },
-  { title: "人均页面浏览", value: "xx人" },
-  { title: "平均浏览时间", value: "xx人" },
-];
+import { SvgContainer } from "../Components/SvgContainer";
 const wid = "7b66286c-bf36-4b57-b810-a967b13c0af4";
 const endPoint = "http://localhost:4002/api/analytics";
 
+type ViewDataAccumulator = {
+  [key: string]: { duration: number; count: number };
+};
 interface Stats {
   uniqueVisitors: number;
   onlineVisitors: number;
@@ -17,11 +14,12 @@ interface Stats {
   totalPageViews: number;
   viewsPerVisit: number;
   avgVisitDuration: number;
+  viewDataAccumulator: ViewDataAccumulator;
 }
 
 function Dashboard() {
-  const [stats, setStats] = useState<Stats | null>(null);
-  useEffect(() => {
+  const [stats, setStats] = React.useState<Stats | null>(null);
+  React.useEffect(() => {
     (async () => {
       try {
         const res = (await (
@@ -61,6 +59,10 @@ function Dashboard() {
           <div>{stats?.avgVisitDuration}</div>
           <div>平均停留时间</div>
         </div>
+      </div>
+
+      <div>
+        <SvgContainer></SvgContainer>
       </div>
     </div>
   );
