@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Layout } from "./Layout";
-import { Dashboard } from "./pages/Dashboard";
+import { Dashboard } from "./pages/Dashboard/index.tsx";
 import { NoMatch } from "./NoMatch";
 
 function Router() {
