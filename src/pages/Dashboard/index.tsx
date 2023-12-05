@@ -45,22 +45,14 @@ function Dashboard() {
   }, [websites]);
 
   const options = React.useMemo(() => {
-    const websites = [
-      { id: "asd1", domain: "asdasdasd" },
-      { id: "asd2", domain: "asdasdasd" },
-      { id: "asd3", domain: "asdasdasd" },
-      { id: "asd4", domain: "asdasdasd" },
-      { id: "asd5", domain: "asdasdasd" },
-      { id: "asd6", domain: "asdasdasd" },
-    ];
-
-    return websites?.map((website) => {
+    if (!websites) return null;
+    return websites.map((website) => {
       return {
         value: website.id,
         label: website.domain,
       };
     });
-  }, []);
+  }, [websites]);
 
   return (
     <div className="dashboard flex flex-col gap-y-2">
