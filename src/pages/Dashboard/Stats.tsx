@@ -29,23 +29,24 @@ function Item(props: Itemprops) {
 }
 function Stats() {
   const [stats, setStats] = React.useState<Stats | null>(null);
+  const getStats = async () => {
+    try {
+      const res = (await (
+        await fetch(endPoint + "/stats" + "?" + new URLSearchParams({ wid }))
+      ).json()) as Stats;
+      setStats(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   React.useEffect(() => {
-    (async () => {
-      try {
-        const res = (await (
-          await fetch(endPoint + "/stats" + "?" + new URLSearchParams({ wid }))
-        ).json()) as Stats;
-        setStats(res);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
+    getStats();
   }, []);
 
   const renderStats = () => {
     if (!stats) return null;
     const keys = Object.keys(stats) as (keyof Stats)[];
-    // console.log(keys);
     return keys.map((key) => {
       const map = {
         uniqueVisitors: {
@@ -75,18 +76,8 @@ function Stats() {
         },
       };
       const props = map[key];
-      console.log(props);
       return <Item key={props.enLabel} {...props} />;
     });
-
-    // return (Object.keys(stats) as (keyof Stats)[]).map((key) => {
-    //   const props = {
-    //     value: stats[key],
-    //     cnLabel: key,
-    //     enLabel: key,
-    //   };
-    //   return <Item key={props.enLabel} {...props} />;
-    // });
   };
 
   return (
