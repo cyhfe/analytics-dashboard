@@ -7,12 +7,10 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  Title,
   Tooltip,
-  Legend,
   BarElement,
 } from "chart.js";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { Card } from "../../Components/Card";
 import dayjs from "dayjs";
 

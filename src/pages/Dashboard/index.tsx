@@ -3,7 +3,7 @@ import { endPoint } from "../../constant";
 import * as React from "react";
 import { Select } from "../../Components/Select";
 import { Chart } from "./Chart";
-import { Referrer } from "./referrer";
+import { Referrer } from "./Referrer";
 interface Websites {
   domain: string;
   id: string;
