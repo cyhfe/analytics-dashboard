@@ -12,11 +12,13 @@ interface Uv {
   count: number;
 }
 
+type CurrentShowData = "uv" | "pv" | "vpv" | "vd";
+
 function Chart(props: { wid: string }) {
   const { wid } = props;
 
   const [uv, setUv] = React.useState<Uv[]>();
-  // const [currentShowData, setCurrentShowData] = React.useState<Uv[]>();
+  const [currentShowData, setCurrentShowData] = React.useState<Uv[]>();
   const getUv = React.useCallback(async () => {
     const { uv } = (await fetch(
       endPoint + "/uv?" + new URLSearchParams({ wid })
@@ -59,9 +61,16 @@ function Chart(props: { wid: string }) {
     };
   }, [uv]);
 
+  const totalUv = React.useMemo(() => {
+    if (!uv) return 0;
+    return uv.reduce((acc, item) => {
+      return (acc += item.count);
+    }, 0);
+  }, [uv]);
+
   return (
     <>
-      {/* <Stats /> */}
+      <Stats uv={totalUv} />
       <Card className="bg-white p-8">
         <div className="">
           <Line className="h-[300px] w-full" options={options} data={data} />
