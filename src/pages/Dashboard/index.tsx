@@ -14,6 +14,16 @@ interface Websites {
   domain: string;
   id: string;
 }
+
+function OnlineIcon() {
+  return (
+    <span className="relative flex h-3 w-3">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+      <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
+    </span>
+  );
+}
+
 function Dashboard() {
   // const [websites, setWebsites] = React.useState<Websites[]>();
   const [selectedWebsite, setSelectedWebsite] = React.useState<string>();
@@ -71,32 +81,21 @@ function Dashboard() {
 
       {isGetWebsitesLoading && <Loading />}
       {options && (
-        <WebsitesSelect
-          options={options}
-          placeholder="select a website"
-          onSelectedChange={(v) => setSelectedWebsite(v as string)}
-          selectedValue={selectedWebsite}
-        />
-      )}
-
-      <div>
-        <div>
-          {options && (
-            <div className="flex justify-between p-2">
-              <div className="flex items-center gap-x-3">
-                <span className="relative flex h-3 w-3">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
-                </span>
-                <span>
-                  在线: <span className="font-medium">{online ?? "?"}</span>
-                </span>
-              </div>
-            </div>
-          )}
+        <div className="flex gap-x-4">
+          <WebsitesSelect
+            options={options}
+            placeholder="select a website"
+            onSelectedChange={(v) => setSelectedWebsite(v as string)}
+            selectedValue={selectedWebsite}
+          />
+          <div className="flex items-center gap-x-3">
+            <OnlineIcon />
+            <span>
+              在线: <span className="font-medium">{online ?? "?"}</span>
+            </span>
+          </div>
         </div>
-        {isGetWebsitesLoading && "loading"}
-      </div>
+      )}
 
       {selectedWebsite && (
         <>

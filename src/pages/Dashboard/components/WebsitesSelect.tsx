@@ -1,7 +1,6 @@
 import {
   SelectLabel,
   SelectOption,
-  SelectPlaceholder,
   SelectPopup,
   SelectRoot,
   SelectTrigger,
@@ -24,8 +23,7 @@ const WebsitesSelect = React.forwardRef<HTMLDivElement, SelectProps>(
     const { options, ...rest } = props;
     return (
       <SelectRoot ref={forwardRef} {...rest} className="font-semibold">
-        <SelectTrigger className="flex items-center justify-between gap-x-2">
-          <SelectPlaceholder className="text-slate-400" />
+        <SelectTrigger className="flex min-w-[90px] items-center justify-between gap-x-2 text-left">
           <SelectLabel />
           <FaAngleDown />
         </SelectTrigger>
@@ -33,7 +31,7 @@ const WebsitesSelect = React.forwardRef<HTMLDivElement, SelectProps>(
         <SelectPopup
           placement="bottom-start"
           keepMounted
-          className="flex max-h-[200px] flex-col overflow-auto rounded  bg-white shadow-lg"
+          className="flex max-h-[200px] min-w-[120px] flex-col overflow-auto  rounded bg-white shadow-lg"
         >
           {options.map((option) => {
             return (
