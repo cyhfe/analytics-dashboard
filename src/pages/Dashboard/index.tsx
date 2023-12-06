@@ -4,6 +4,8 @@ import * as React from "react";
 import { Select } from "../../Components/Select";
 import { Chart } from "./Chart";
 import { Referrer } from "./Referrer";
+import { Pages } from "./Pages";
+import { Card } from "../../Components/Card";
 interface Websites {
   domain: string;
   id: string;
@@ -79,7 +81,15 @@ function Dashboard() {
       <Stats />
 
       {selectedWebsite && <Chart wid={selectedWebsite} />}
-      {selectedWebsite && <Referrer wid={selectedWebsite} />}
+      {/* {selectedWebsite && <Referrer wid={selectedWebsite} />} */}
+      <div className="flex gap-x-6">
+        <Card className="basis-1/2 p-4">
+          {selectedWebsite && <Pages wid={selectedWebsite} />}
+        </Card>
+        <Card className="basis-1/2 p-4">
+          {selectedWebsite && <Pages wid={selectedWebsite} />}
+        </Card>
+      </div>
     </div>
   );
 }

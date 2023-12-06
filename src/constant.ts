@@ -1,2 +1,2 @@
-export const wid = "7b66286c-bf36-4b57-b810-a967b13c0af4";
+export const wid = "99516343-35df-4a8d-baf5-4af2295034be";
 export const endPoint = "http://localhost:4002/api/analytics";
