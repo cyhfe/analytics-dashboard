@@ -1,116 +1,70 @@
 import * as React from "react";
 import { endPoint } from "../../constant";
 
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  BarElement,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import { Card } from "../../Components/Card";
-import dayjs from "dayjs";
+
 import { Stats } from "./Stats";
+import dayjs from "dayjs";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  // Title,
-  Tooltip
-  // Legend
-);
-
-interface ViewData {
-  [key: string]: {
-    duration: number;
-    count: number;
-  };
+interface Uv {
+  date: string;
+  count: number;
 }
-
-const options = {
-  responsive: true,
-  // bezierCurve: false,
-  // plugins: {
-  //   // legend: {
-  //   //   position: "top" as const,
-  //   // },
-  //   // title: {
-  //   //   display: true,
-  //   //   text: "Line Chart",
-  //   // },
-  // },
-};
 
 function Chart(props: { wid: string }) {
   const { wid } = props;
 
-  const [viewData, setViewData] = React.useState<ViewData>();
-
-  const getViewData = React.useCallback(async () => {
-    const { viewDataAccumulator } = (await fetch(
-      endPoint + "/viewData?" + new URLSearchParams({ wid })
+  const [uv, setUv] = React.useState<Uv[]>();
+  // const [currentShowData, setCurrentShowData] = React.useState<Uv[]>();
+  const getUv = React.useCallback(async () => {
+    const { uv } = (await fetch(
+      endPoint + "/uv?" + new URLSearchParams({ wid })
     )
       .then((res) => res.json())
-      .catch((err) => console.log(err))) as { viewDataAccumulator: ViewData };
-    setViewData(viewDataAccumulator);
+      .catch((err) => console.log(err))) as {
+      uv: {
+        timestamp: number;
+        count: number;
+      }[];
+    };
+    setUv(
+      uv.map((item) => ({
+        count: item.count,
+        date: dayjs(item.timestamp).format("YYYY-MM-DD HH:mm"),
+      }))
+    );
   }, [wid]);
 
   React.useEffect(() => {
-    getViewData();
-  }, [getViewData]);
+    getUv();
+  }, [getUv]);
 
-  const counts = React.useMemo(() => {
-    if (!viewData) return null;
-    return Object.keys(viewData).map((key) => viewData[key].count);
-  }, [viewData]);
-
-  const stayDuration = React.useMemo(() => {
-    if (!viewData) return null;
-    return Object.keys(viewData).map((key) =>
-      (viewData[key].duration / 1000).toFixed(0)
-    );
-  }, [viewData]);
-
-  const times = React.useMemo(() => {
-    if (!viewData) return null;
-    return Object.keys(viewData).map((key) =>
-      dayjs(Number(key)).format("MM-DD HH点")
-    );
-  }, [viewData]);
-
-  const data = times && {
-    labels: times,
-    datasets: [
-      // {
-      //   label: "浏览时间(秒)",
-      //   data: stayDuration,
-      //   borderColor: "rgb(0, 0, 0)",
-      //   backgroundColor: "rgb(255, 255, 255)",
-      //   tension: 0.3,
-      // },
-      {
-        label: "页面浏览量",
-        data: counts,
-        borderColor: "rgb(255, 255, 255)",
-        backgroundColor: "#cbd5e1",
+  const options = React.useMemo(() => {
+    return {
+      parsing: {
+        xAxisKey: "date",
+        yAxisKey: "count",
       },
-    ],
-  };
+    };
+  }, []);
+
+  const data = React.useMemo(() => {
+    return {
+      datasets: [
+        {
+          data: uv,
+        },
+      ],
+    };
+  }, [uv]);
 
   return (
     <>
-      <Stats />
+      {/* <Stats /> */}
       <Card className="bg-white p-8">
         <div className="">
-          {options && data && (
-            <Bar className="h-[300px] w-full" options={options} data={data} />
-          )}
+          <Line className="h-[300px] w-full" options={options} data={data} />
         </div>
       </Card>
     </>

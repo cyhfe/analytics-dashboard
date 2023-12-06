@@ -25,8 +25,6 @@ function Country(props: { wid: string }) {
     });
   }, [active, countries]);
 
-  console.log(sortCountries);
-
   const getCountries = React.useCallback(async () => {
     const { countries } = (await fetch(
       endPoint + "/countries?" + new URLSearchParams({ wid })
@@ -35,7 +33,6 @@ function Country(props: { wid: string }) {
       .catch((err) => console.log(err))) as {
       countries: Country[];
     };
-    console.log(countries);
     setCountries(countries);
   }, [wid]);
 
@@ -74,16 +71,14 @@ function Country(props: { wid: string }) {
       <div className="overflow-auto max-h-[500px]  flex flex-col gap-y-1 items-stretch px-4 py-2">
         {sortCountries &&
           sortCountries.map(({ country, count, duration, sessions }) => (
-            <>
-              <div className="flex justify-between ">
-                <div>{country === "" ? "unknown" : country}</div>
-                <div>
-                  {active === "count" && <div>{count}</div>}
-                  {active === "duration" && <div>{timeDuration(duration)}</div>}
-                  {active === "sessions" && <div>{sessions}</div>}
-                </div>
+            <div className="flex justify-between" key={country}>
+              <div>{country === "" ? "unknown" : country}</div>
+              <div>
+                {active === "count" && <div>{count}</div>}
+                {active === "duration" && <div>{timeDuration(duration)}</div>}
+                {active === "sessions" && <div>{sessions}</div>}
               </div>
-            </>
+            </div>
           ))}
       </div>
     </div>

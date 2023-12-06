@@ -70,18 +70,16 @@ function Pages(props: { wid: string }) {
       <div className="overflow-auto max-h-[500px]  flex flex-col gap-y-1 items-stretch px-4 py-2">
         {sortPages &&
           sortPages.map((page) => (
-            <>
-              <div className="flex justify-between ">
-                <div>{page.pathname}</div>
-                <div>
-                  {active === "count" && <div>{page.count}</div>}
-                  {active === "duration" && (
-                    <div>{timeDuration(page.duration)}</div>
-                  )}
-                  {active === "sessions" && <div>{page.sessions}</div>}
-                </div>
+            <div className="flex justify-between " key={page.pathname}>
+              <div>{page.pathname}</div>
+              <div>
+                {active === "count" && <div>{page.count}</div>}
+                {active === "duration" && (
+                  <div>{timeDuration(page.duration)}</div>
+                )}
+                {active === "sessions" && <div>{page.sessions}</div>}
               </div>
-            </>
+            </div>
           ))}
       </div>
     </div>

@@ -70,20 +70,18 @@ function Referrers(props: { wid: string }) {
       <div className="overflow-auto max-h-[500px]  flex flex-col gap-y-1 items-stretch px-4 py-2">
         {sortReferrers &&
           sortReferrers.map((referrer) => (
-            <>
-              <div className="flex justify-between ">
-                <div>
-                  {referrer.referrer === "" ? "Direct" : referrer.referrer}
-                </div>
-                <div>
-                  {active === "count" && <div>{referrer.count}</div>}
-                  {active === "duration" && (
-                    <div>{timeDuration(referrer.duration)}</div>
-                  )}
-                  {active === "sessions" && <div>{referrer.sessions}</div>}
-                </div>
+            <div className="flex justify-between " key={referrer.referrer}>
+              <div>
+                {referrer.referrer === "" ? "Direct" : referrer.referrer}
               </div>
-            </>
+              <div>
+                {active === "count" && <div>{referrer.count}</div>}
+                {active === "duration" && (
+                  <div>{timeDuration(referrer.duration)}</div>
+                )}
+                {active === "sessions" && <div>{referrer.sessions}</div>}
+              </div>
+            </div>
           ))}
       </div>
     </div>
