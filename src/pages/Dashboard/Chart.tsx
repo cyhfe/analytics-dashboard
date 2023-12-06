@@ -33,7 +33,7 @@ interface ViewData {
 }
 
 const options = {
-  // responsive: true,
+  responsive: true,
   // bezierCurve: false,
   // plugins: {
   //   // legend: {
@@ -108,8 +108,12 @@ function Chart(props: { wid: string }) {
   };
 
   return (
-    <Card className="bg-white p-4">
-      {options && data && <Bar options={options} data={data} />}
+    <Card className="bg-white p-8">
+      <div className="">
+        {options && data && (
+          <Bar className="h-[300px] w-full" options={options} data={data} />
+        )}
+      </div>
     </Card>
   );
 }

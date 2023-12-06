@@ -1,6 +1,7 @@
 import * as React from "react";
 import { endPoint } from "../../constant";
-import { cn } from "../../utils";
+import { cn, timeDuration } from "../../utils";
+import { Card } from "../../Components/Card";
 
 interface Page {
   pathname: string;
@@ -64,36 +65,52 @@ function Pages(props: { wid: string }) {
   }, [getPages]);
 
   return (
-    <div>
-      <div className="inline-flex  items-center justify-center rounded-lg bg-slate-100 p-1">
-        <Button onClick={() => setActive("count")} active={active === "count"}>
-          点击量
-        </Button>
-        <Button
-          onClick={() => setActive("sessions")}
-          active={active === "sessions"}
-        >
-          用户量
-        </Button>
-        <Button
-          onClick={() => setActive("duration")}
-          active={active === "duration"}
-        >
-          停留时间
-        </Button>
+    <div className="prose">
+      <div className="flex justify-between items-center mb-2">
+        <h4 className="m-0">page</h4>
+        <div>
+          <div className="inline-flex  items-center justify-center rounded-lg bg-slate-100 p-1">
+            <Button
+              onClick={() => setActive("count")}
+              active={active === "count"}
+            >
+              点击量
+            </Button>
+            <Button
+              onClick={() => setActive("sessions")}
+              active={active === "sessions"}
+            >
+              用户量
+            </Button>
+            <Button
+              onClick={() => setActive("duration")}
+              active={active === "duration"}
+            >
+              停留时间
+            </Button>
+          </div>
+        </div>
       </div>
 
-      {sortPages &&
-        sortPages.map((page) => (
-          <div className="flex justify-between">
-            <div>{page.pathname}</div>
-            <div>
-              {active === "count" && <div>{page.count}</div>}
-              {active === "duration" && <div>{page.duration}</div>}
-              {active === "sessions" && <div>{page.sessions}</div>}
-            </div>
-          </div>
-        ))}
+      <div className="">
+        <div className="overflow-auto max-h-[500px]  flex flex-col gap-y-1 items-stretch px-4 py-2">
+          {sortPages &&
+            sortPages.map((page) => (
+              <>
+                <div className="flex justify-between ">
+                  <div>{page.pathname}</div>
+                  <div>
+                    {active === "count" && <div>{page.count}</div>}
+                    {active === "duration" && (
+                      <div>{timeDuration(page.duration)}</div>
+                    )}
+                    {active === "sessions" && <div>{page.sessions}</div>}
+                  </div>
+                </div>
+              </>
+            ))}
+        </div>
+      </div>
     </div>
   );
 }
