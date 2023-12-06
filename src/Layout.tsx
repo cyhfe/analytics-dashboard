@@ -5,10 +5,12 @@ export function Layout() {
     <div className="bg-slate-50 min-h-screen">
       <div className="container mx-auto p-2 md:px-4 lg:px-6 max-w-6xl">
         <nav className="mb-2 p-2">
-          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/dashboard" className="font-bold text-xl">
+            Dashboard
+          </Link>
         </nav>
         <Outlet />
-        <footer className="min-h-[100px] flex items-center justify-center">
+        <footer className="min-h-[100px] flex items-center justify-center text-slate-400">
           analytics {dayjs(Date.now()).format("YYYY-MM-DD")}
         </footer>
       </div>

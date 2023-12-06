@@ -2,8 +2,9 @@ import * as React from "react";
 import { endPoint } from "../../constant";
 import { timeDuration } from "../../utils";
 import { Button } from "./components/Button";
-interface Page {
-  pathname: string;
+
+interface Country {
+  country: string;
   duration: number;
   count: number;
   sessions: number;
@@ -11,38 +12,41 @@ interface Page {
 
 type Active = "count" | "duration" | "sessions";
 
-function Pages(props: { wid: string }) {
+function Country(props: { wid: string }) {
   const { wid } = props;
 
-  const [pages, setPages] = React.useState<Page[]>();
+  const [countries, setCountries] = React.useState<Country[]>();
 
   const [active, setActive] = React.useState<Active>("count");
 
-  const sortPages = React.useMemo(() => {
-    return pages?.sort((a, b) => {
+  const sortCountries = React.useMemo(() => {
+    return countries?.sort((a, b) => {
       return b[active] - a[active];
     });
-  }, [active, pages]);
+  }, [active, countries]);
 
-  const getPages = React.useCallback(async () => {
-    const { pages } = (await fetch(
-      endPoint + "/pages?" + new URLSearchParams({ wid })
+  console.log(sortCountries);
+
+  const getCountries = React.useCallback(async () => {
+    const { countries } = (await fetch(
+      endPoint + "/countries?" + new URLSearchParams({ wid })
     )
       .then((res) => res.json())
       .catch((err) => console.log(err))) as {
-      pages: Page[];
+      countries: Country[];
     };
-    setPages(pages);
+    console.log(countries);
+    setCountries(countries);
   }, [wid]);
 
   React.useEffect(() => {
-    getPages();
-  }, [getPages]);
+    getCountries();
+  }, [getCountries]);
 
   return (
     <div className="prose">
       <div className="flex justify-between items-center mb-2">
-        <h4 className="m-0">Page</h4>
+        <h4 className="m-0">Region</h4>
         <div>
           <div className="inline-flex  items-center justify-center rounded-lg bg-slate-100 p-1">
             <Button
@@ -68,17 +72,15 @@ function Pages(props: { wid: string }) {
       </div>
 
       <div className="overflow-auto max-h-[500px]  flex flex-col gap-y-1 items-stretch px-4 py-2">
-        {sortPages &&
-          sortPages.map((page) => (
+        {sortCountries &&
+          sortCountries.map(({ country, count, duration, sessions }) => (
             <>
               <div className="flex justify-between ">
-                <div>{page.pathname}</div>
+                <div>{country === "" ? "unknown" : country}</div>
                 <div>
-                  {active === "count" && <div>{page.count}</div>}
-                  {active === "duration" && (
-                    <div>{timeDuration(page.duration)}</div>
-                  )}
-                  {active === "sessions" && <div>{page.sessions}</div>}
+                  {active === "count" && <div>{count}</div>}
+                  {active === "duration" && <div>{timeDuration(duration)}</div>}
+                  {active === "sessions" && <div>{sessions}</div>}
                 </div>
               </div>
             </>
@@ -88,4 +90,4 @@ function Pages(props: { wid: string }) {
   );
 }
 
-export { Pages };
+export { Country };

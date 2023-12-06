@@ -13,6 +13,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import { Card } from "../../Components/Card";
 import dayjs from "dayjs";
+import { Stats } from "./Stats";
 
 ChartJS.register(
   CategoryScale,
@@ -65,15 +66,11 @@ function Chart(props: { wid: string }) {
   }, [getViewData]);
 
   const counts = React.useMemo(() => {
-    console.log("memo");
-
     if (!viewData) return null;
     return Object.keys(viewData).map((key) => viewData[key].count);
   }, [viewData]);
 
   const stayDuration = React.useMemo(() => {
-    console.log("memo");
-
     if (!viewData) return null;
     return Object.keys(viewData).map((key) =>
       (viewData[key].duration / 1000).toFixed(0)
@@ -81,7 +78,6 @@ function Chart(props: { wid: string }) {
   }, [viewData]);
 
   const times = React.useMemo(() => {
-    console.log("memo");
     if (!viewData) return null;
     return Object.keys(viewData).map((key) =>
       dayjs(Number(key)).format("MM-DD HH点")
@@ -108,13 +104,16 @@ function Chart(props: { wid: string }) {
   };
 
   return (
-    <Card className="bg-white p-8">
-      <div className="">
-        {options && data && (
-          <Bar className="h-[300px] w-full" options={options} data={data} />
-        )}
-      </div>
-    </Card>
+    <>
+      <Stats />
+      <Card className="bg-white p-8">
+        <div className="">
+          {options && data && (
+            <Bar className="h-[300px] w-full" options={options} data={data} />
+          )}
+        </div>
+      </Card>
+    </>
   );
 }
 

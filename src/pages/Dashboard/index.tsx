@@ -1,4 +1,3 @@
-import { Stats } from "./Stats";
 import { endPoint } from "../../constant";
 import * as React from "react";
 import { Select } from "../../Components/Select";
@@ -6,6 +5,7 @@ import { Chart } from "./Chart";
 import { Referrers } from "./Referrer";
 import { Pages } from "./Pages";
 import { Card } from "../../Components/Card";
+import { Country } from "./Contry";
 interface Websites {
   domain: string;
   id: string;
@@ -80,13 +80,19 @@ function Dashboard() {
             </div>
           )}
 
-          <Stats />
-
           <Chart wid={selectedWebsite} />
 
           <div className="flex gap-x-6">
             <Card className="basis-1/2 p-4">
               <Pages wid={selectedWebsite} />
+            </Card>
+            <Card className="basis-1/2 p-4">
+              <Referrers wid={selectedWebsite} />
+            </Card>
+          </div>
+          <div className="flex gap-x-6">
+            <Card className="basis-1/2 p-4">
+              <Country wid={selectedWebsite} />
             </Card>
             <Card className="basis-1/2 p-4">
               <Referrers wid={selectedWebsite} />
