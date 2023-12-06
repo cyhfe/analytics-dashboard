@@ -39,9 +39,9 @@ function Chart(props: { wid: string }) {
     );
   }, [wid]);
 
-  React.useEffect(() => {
-    getUv();
-  }, [getUv]);
+  // React.useEffect(() => {
+  //   getUv();
+  // }, [getUv]);
 
   const options = React.useMemo(() => {
     return {

@@ -6,21 +6,22 @@ import { Referrers } from "./Referrer";
 import { Pages } from "./Pages";
 import { Card } from "../../Components/Card";
 import { Country } from "./Contry";
+import { useQuery, useQueryClient } from "react-query";
+import axios from "axios";
+import { Loading } from "../../Components/Loading";
+import { WebsitesSelect } from "./components/WebsitesSelect";
 interface Websites {
   domain: string;
   id: string;
 }
 function Dashboard() {
-  const [websites, setWebsites] = React.useState<Websites[]>();
+  // const [websites, setWebsites] = React.useState<Websites[]>();
   const [selectedWebsite, setSelectedWebsite] = React.useState<string>();
   const [online, setOnline] = React.useState<number>();
 
-  const getWebsites = async () => {
-    const res = (await fetch(endPoint + "/websites").then((res) =>
-      res.json()
-    )) as Websites[];
-    setWebsites(res);
-  };
+  // const getWebsites = async () => {
+  //   return await
+  // };
 
   const getOnline = React.useCallback(async () => {
     if (!selectedWebsite) return;
@@ -32,9 +33,17 @@ function Dashboard() {
     setOnline(res.onlineVisitors);
   }, [selectedWebsite]);
 
-  React.useEffect(() => {
-    getWebsites();
-  }, []);
+  const queryClient = useQueryClient();
+  const { data: websites, isLoading: isGetWebsitesLoading } = useQuery<
+    Websites[],
+    Error
+  >(
+    "websites",
+    async () =>
+      await axios.get<Websites[]>(endPoint + "/websites").then((res) => {
+        return res.data;
+      })
+  );
 
   React.useEffect(() => {
     getOnline();
@@ -58,8 +67,20 @@ function Dashboard() {
 
   return (
     <div className="dashboard flex flex-col gap-y-2">
-      {selectedWebsite && (
-        <>
+      {/* select websites */}
+
+      {isGetWebsitesLoading && <Loading />}
+      {options && (
+        <WebsitesSelect
+          options={options}
+          placeholder="select a website"
+          onSelectedChange={(v) => setSelectedWebsite(v as string)}
+          selectedValue={selectedWebsite}
+        />
+      )}
+
+      <div>
+        <div>
           {options && (
             <div className="flex justify-between p-2">
               <div className="flex items-center gap-x-3">
@@ -71,15 +92,14 @@ function Dashboard() {
                   在线: <span className="font-medium">{online ?? "?"}</span>
                 </span>
               </div>
-              <Select
-                options={options}
-                placeholder="select a website"
-                onSelectedChange={(v) => setSelectedWebsite(v as string)}
-                selectedValue={selectedWebsite}
-              />
             </div>
           )}
+        </div>
+        {isGetWebsitesLoading && "loading"}
+      </div>
 
+      {selectedWebsite && (
+        <>
           <Chart wid={selectedWebsite} />
 
           <div className="flex gap-x-6">

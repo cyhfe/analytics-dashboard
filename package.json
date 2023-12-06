@@ -10,7 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cyhfe/react-ui": "^0.0.14",
+    "@cyhfe/react-ui": "^0.0.15",
+    "axios": "^1.6.2",
     "chart.js": "^4.4.1",
     "clsx": "^2.0.0",
     "dayjs": "^1.11.10",
