@@ -1,54 +1,117 @@
 import * as React from "react";
 import { endPoint } from "../../constant";
-import { Card } from "../../Components/Card";
+import { cn, timeDuration } from "../../utils";
 
 interface Referrer {
   referrer: string;
+  duration: number;
   count: number;
+  sessions: number;
 }
 
-function Referrer(props: { wid: string }) {
+type Active = "count" | "duration" | "sessions";
+
+interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
+  active?: boolean;
+}
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  props: ButtonProps,
+  forwardRef
+) {
+  const { children, className, active = false, ...rest } = props;
+  const activeCn = active ? "bg-white font-medium  text-slate-800 shadow" : "";
+  return (
+    <button
+      className={cn(
+        "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm text-slate-400 font-normal ",
+        activeCn,
+        className
+      )}
+      ref={forwardRef}
+      {...rest}
+    >
+      {children}
+    </button>
+  );
+});
+
+function Referrers(props: { wid: string }) {
   const { wid } = props;
 
   const [referrers, setReferrers] = React.useState<Referrer[]>();
-  const [totalCount, setTotalCount] = React.useState<number>();
 
-  const getViewData = React.useCallback(async () => {
-    const { referrer: r, totalCount: t } = (await fetch(
-      endPoint + "/referrer?" + new URLSearchParams({ wid })
+  const [active, setActive] = React.useState<Active>("count");
+
+  const sortReferrers = React.useMemo(() => {
+    return referrers?.sort((a, b) => {
+      return b[active] - a[active];
+    });
+  }, [active, referrers]);
+
+  const getReferrers = React.useCallback(async () => {
+    const { referrers } = (await fetch(
+      endPoint + "/referrers?" + new URLSearchParams({ wid })
     )
       .then((res) => res.json())
       .catch((err) => console.log(err))) as {
-      referrer: Referrer[];
-      totalCount: number;
+      referrers: Referrer[];
     };
-    setReferrers(r);
-    setTotalCount(t);
+    setReferrers(referrers);
   }, [wid]);
 
   React.useEffect(() => {
-    getViewData();
-  }, [getViewData]);
+    getReferrers();
+  }, [getReferrers]);
+
   return (
-    <Card>
-      {referrers &&
-        referrers.map((referrer) => {
-          return (
-            <div key={referrer.referrer} className="flex justify-between">
-              <div>
-                {!referrer.referrer
-                  ? "direct"
-                  : new URL(referrer.referrer).hostname}
+    <div className="prose">
+      <div className="flex justify-between items-center mb-2">
+        <h4 className="m-0">Referrer</h4>
+        <div>
+          <div className="inline-flex  items-center justify-center rounded-lg bg-slate-100 p-1">
+            <Button
+              onClick={() => setActive("count")}
+              active={active === "count"}
+            >
+              点击量
+            </Button>
+            <Button
+              onClick={() => setActive("sessions")}
+              active={active === "sessions"}
+            >
+              用户量
+            </Button>
+            <Button
+              onClick={() => setActive("duration")}
+              active={active === "duration"}
+            >
+              停留时间
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="overflow-auto max-h-[500px]  flex flex-col gap-y-1 items-stretch px-4 py-2">
+        {sortReferrers &&
+          sortReferrers.map((referrer) => (
+            <>
+              <div className="flex justify-between ">
+                <div>
+                  {referrer.referrer === "" ? "Direct" : referrer.referrer}
+                </div>
+                <div>
+                  {active === "count" && <div>{referrer.count}</div>}
+                  {active === "duration" && (
+                    <div>{timeDuration(referrer.duration)}</div>
+                  )}
+                  {active === "sessions" && <div>{referrer.sessions}</div>}
+                </div>
               </div>
-              <div>
-                {referrer.count}-
-                {((referrer.count / (totalCount ?? 0)) * 100).toFixed(1) + "%"}
-              </div>
-            </div>
-          );
-        })}
-    </Card>
+            </>
+          ))}
+      </div>
+    </div>
   );
 }
 
-export { Referrer };
+export { Referrers };

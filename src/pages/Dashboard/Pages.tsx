@@ -1,7 +1,6 @@
 import * as React from "react";
 import { endPoint } from "../../constant";
 import { cn, timeDuration } from "../../utils";
-import { Card } from "../../Components/Card";
 
 interface Page {
   pathname: string;
@@ -67,7 +66,7 @@ function Pages(props: { wid: string }) {
   return (
     <div className="prose">
       <div className="flex justify-between items-center mb-2">
-        <h4 className="m-0">page</h4>
+        <h4 className="m-0">Page</h4>
         <div>
           <div className="inline-flex  items-center justify-center rounded-lg bg-slate-100 p-1">
             <Button
@@ -92,24 +91,22 @@ function Pages(props: { wid: string }) {
         </div>
       </div>
 
-      <div className="">
-        <div className="overflow-auto max-h-[500px]  flex flex-col gap-y-1 items-stretch px-4 py-2">
-          {sortPages &&
-            sortPages.map((page) => (
-              <>
-                <div className="flex justify-between ">
-                  <div>{page.pathname}</div>
-                  <div>
-                    {active === "count" && <div>{page.count}</div>}
-                    {active === "duration" && (
-                      <div>{timeDuration(page.duration)}</div>
-                    )}
-                    {active === "sessions" && <div>{page.sessions}</div>}
-                  </div>
+      <div className="overflow-auto max-h-[500px]  flex flex-col gap-y-1 items-stretch px-4 py-2">
+        {sortPages &&
+          sortPages.map((page) => (
+            <>
+              <div className="flex justify-between ">
+                <div>{page.pathname}</div>
+                <div>
+                  {active === "count" && <div>{page.count}</div>}
+                  {active === "duration" && (
+                    <div>{timeDuration(page.duration)}</div>
+                  )}
+                  {active === "sessions" && <div>{page.sessions}</div>}
                 </div>
-              </>
-            ))}
-        </div>
+              </div>
+            </>
+          ))}
       </div>
     </div>
   );
