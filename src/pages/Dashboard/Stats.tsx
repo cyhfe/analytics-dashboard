@@ -57,34 +57,9 @@ const map = {
 
 function Stats(props: StatsProps) {
   const { uv } = props;
-  // const [stats, setStats] = React.useState<Stats | null>(null);
-  // const getStats = async () => {
-  //   try {
-  //     const res = (await (
-  //       await fetch(endPoint + "/stats?" + new URLSearchParams({ wid }))
-  //     ).json()) as Stats;
-  //     setStats(res);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // React.useEffect(() => {
-  //   getStats();
-  // }, []);
-
-  // const renderStats = () => {
-  //   // if (!stats) return null;
-  //   // const keys = Object.keys(stats) as (keyof Stats)[];
-  //   return keys.map((key) => {
-  //     const props = map[key];
-  //     return <Item key={props.enLabel} {...props} />;
-  //   });
-  // };
 
   return (
     <div className="flex flex-col gap-y-2 sm:flex-row sm:gap-x-2 md:gap-x-4">
-      {/* {renderStats()} */}
       <Item value={uv} {...map.uniqueVisitors} />
     </div>
   );

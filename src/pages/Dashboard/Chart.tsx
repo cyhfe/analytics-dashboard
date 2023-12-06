@@ -18,7 +18,8 @@ function Chart(props: { wid: string }) {
   const { wid } = props;
 
   const [uv, setUv] = React.useState<Uv[]>();
-  const [currentShowData, setCurrentShowData] = React.useState<Uv[]>();
+  const [currentShowData, setCurrentShowData] =
+    React.useState<CurrentShowData>("uv");
   const getUv = React.useCallback(async () => {
     const { uv } = (await fetch(
       endPoint + "/uv?" + new URLSearchParams({ wid })
@@ -51,7 +52,7 @@ function Chart(props: { wid: string }) {
     };
   }, []);
 
-  const data = React.useMemo(() => {
+  const uvData = React.useMemo(() => {
     return {
       datasets: [
         {
@@ -73,7 +74,7 @@ function Chart(props: { wid: string }) {
       <Stats uv={totalUv} />
       <Card className="bg-white p-8">
         <div className="">
-          <Line className="h-[300px] w-full" options={options} data={data} />
+          <Line className="h-[300px] w-full" options={options} data={uvData} />
         </div>
       </Card>
     </>
