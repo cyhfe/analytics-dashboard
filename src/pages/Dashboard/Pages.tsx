@@ -19,9 +19,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   forwardRef
 ) {
   const { children, className, active = false, ...rest } = props;
-  const activeCn = active
-    ? "bg-white font-medium  text-slate-800 shadow-md"
-    : "";
+  const activeCn = active ? "bg-white font-medium  text-slate-800 shadow" : "";
   return (
     <button
       className={cn(
@@ -44,7 +42,11 @@ function Pages(props: { wid: string }) {
 
   const [active, setActive] = React.useState<Active>("count");
 
-  const sortPages = () => {};
+  const sortPages = React.useMemo(() => {
+    return pages?.sort((a, b) => {
+      return b[active] - a[active];
+    });
+  }, [active, pages]);
 
   const getPages = React.useCallback(async () => {
     const { pages } = (await fetch(
@@ -81,8 +83,8 @@ function Pages(props: { wid: string }) {
         </Button>
       </div>
 
-      {pages &&
-        pages.map((page) => (
+      {sortPages &&
+        sortPages.map((page) => (
           <div className="flex justify-between">
             <div>{page.pathname}</div>
             <div>
