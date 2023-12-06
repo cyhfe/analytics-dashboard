@@ -26,7 +26,7 @@ function Dashboard() {
   const getOnline = React.useCallback(async () => {
     if (!selectedWebsite) return;
     const res = (await fetch(
-      endPoint + "/online?" + new URLSearchParams({ wid: selectedWebsite })
+      endPoint + "/online?" + new URLSearchParams({ wid: selectedWebsite }),
     ).then((res) => res.json())) as {
       onlineVisitors: number;
     };
@@ -42,7 +42,7 @@ function Dashboard() {
     async () =>
       await axios.get<Websites[]>(endPoint + "/websites").then((res) => {
         return res.data;
-      })
+      }),
   );
 
   React.useEffect(() => {
@@ -85,8 +85,8 @@ function Dashboard() {
             <div className="flex justify-between p-2">
               <div className="flex items-center gap-x-3">
                 <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
                 </span>
                 <span>
                   在线: <span className="font-medium">{online ?? "?"}</span>

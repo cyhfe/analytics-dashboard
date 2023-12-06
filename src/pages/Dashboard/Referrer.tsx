@@ -26,7 +26,7 @@ function Referrers(props: { wid: string }) {
 
   const getReferrers = React.useCallback(async () => {
     const { referrers } = (await fetch(
-      endPoint + "/referrers?" + new URLSearchParams({ wid })
+      endPoint + "/referrers?" + new URLSearchParams({ wid }),
     )
       .then((res) => res.json())
       .catch((err) => console.log(err))) as {
@@ -41,7 +41,7 @@ function Referrers(props: { wid: string }) {
 
   return (
     <div className="prose">
-      <div className="flex justify-between items-center mb-2">
+      <div className="mb-2 flex items-center justify-between">
         <h4 className="m-0">Referrer</h4>
         <div>
           <div className="inline-flex  items-center justify-center rounded-lg bg-slate-100 p-1">
@@ -67,7 +67,7 @@ function Referrers(props: { wid: string }) {
         </div>
       </div>
 
-      <div className="overflow-auto max-h-[500px]  flex flex-col gap-y-1 items-stretch px-4 py-2">
+      <div className="flex max-h-[500px]  flex-col items-stretch gap-y-1 overflow-auto px-4 py-2">
         {sortReferrers &&
           sortReferrers.map((referrer) => (
             <div className="flex justify-between " key={referrer.referrer}>

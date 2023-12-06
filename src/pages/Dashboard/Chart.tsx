@@ -22,7 +22,7 @@ function Chart(props: { wid: string }) {
     React.useState<CurrentShowData>("uv");
   const getUv = React.useCallback(async () => {
     const { uv } = (await fetch(
-      endPoint + "/uv?" + new URLSearchParams({ wid })
+      endPoint + "/uv?" + new URLSearchParams({ wid }),
     )
       .then((res) => res.json())
       .catch((err) => console.log(err))) as {
@@ -35,7 +35,7 @@ function Chart(props: { wid: string }) {
       uv.map((item) => ({
         count: item.count,
         date: dayjs(item.timestamp).format("YYYY-MM-DD HH:mm"),
-      }))
+      })),
     );
   }, [wid]);
 

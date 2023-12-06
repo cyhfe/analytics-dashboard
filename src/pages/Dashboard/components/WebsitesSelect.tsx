@@ -23,37 +23,33 @@ const WebsitesSelect = React.forwardRef<HTMLDivElement, SelectProps>(
   function Select(props: SelectProps, forwardRef) {
     const { options, ...rest } = props;
     return (
-      <div>
-        <SelectRoot ref={forwardRef} {...rest} className="font-semibold">
-          <SelectTrigger className="flex justify-between items-center gap-x-2  p-1">
-            <div>
-              <SelectPlaceholder className="text-slate-500" />
-              <SelectLabel />
-            </div>
-            <FaAngleDown />
-          </SelectTrigger>
+      <SelectRoot ref={forwardRef} {...rest} className="font-semibold">
+        <SelectTrigger className="flex items-center justify-between gap-x-2">
+          <SelectPlaceholder className="text-slate-400" />
+          <SelectLabel />
+          <FaAngleDown />
+        </SelectTrigger>
 
-          <SelectPopup
-            placement="top"
-            keepMounted
-            className="flex flex-col gap-y-1 w-40 min-h-[30px] max-h-[200px] overflow-auto no-scrollbar shadow-md bg-white"
-          >
-            {options.map((option) => {
-              return (
-                <SelectOption
-                  key={option.value}
-                  value={option.value}
-                  className="text-left  hover:bg-slate-200 px-3 py-2  data-[selected=true]:bg-slate-100"
-                >
-                  {option.label}
-                </SelectOption>
-              );
-            })}
-          </SelectPopup>
-        </SelectRoot>
-      </div>
+        <SelectPopup
+          placement="bottom-start"
+          keepMounted
+          className="flex max-h-[200px] flex-col overflow-auto rounded  bg-white shadow-lg"
+        >
+          {options.map((option) => {
+            return (
+              <SelectOption
+                key={option.value}
+                value={option.value}
+                className="px-3 py-2 text-left text-slate-500 hover:!bg-slate-200 data-[selected=true]:bg-slate-100  data-[selected=true]:font-medium  data-[selected=true]:text-slate-800"
+              >
+                {option.label}
+              </SelectOption>
+            );
+          })}
+        </SelectPopup>
+      </SelectRoot>
     );
-  }
+  },
 );
 
 export { WebsitesSelect };

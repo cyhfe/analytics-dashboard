@@ -18,10 +18,10 @@ interface Itemprops {
 }
 function Item(props: Itemprops) {
   return (
-    <Card className="p-4 prose hover:bg-slate-200 cursor-pointer transition ">
+    <Card className="prose cursor-pointer p-4 transition hover:bg-slate-200 ">
       <h1 className="mb-2">{props.value}</h1>
       <div>{props.cnLabel}</div>
-      <div className="text-slate-400 text-sm">
+      <div className="text-sm text-slate-400">
         {props.enLabel.toUpperCase()}
       </div>
     </Card>
