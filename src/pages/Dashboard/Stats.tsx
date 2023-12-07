@@ -22,32 +22,31 @@ interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
 }
 
 function Item(props: ItemProps) {
+  const { value, active, cnLabel, enLabel, ...rest } = props;
   return (
     <Card
       className={cn(
         "prose cursor-pointer p-4  transition  hover:shadow-xl",
-        props.active && "bg-slate-950 text-white ",
+        active && "bg-slate-950 text-white ",
       )}
-      {...props}
+      {...rest}
     >
-      <h1 className={cn("mb-2 transition", props.active && "text-white")}>
-        {props.value}
-      </h1>
+      <h1 className={cn("mb-2 transition", active && "text-white")}>{value}</h1>
       <div
         className={cn(
           "mb-1 text-sm text-slate-600 transition",
-          props.active && "text-white",
+          active && "text-white",
         )}
       >
-        {props.cnLabel}
+        {cnLabel}
       </div>
       <div
         className={cn(
           "text-xs text-slate-400 transition",
-          props.active && "text-slate-300",
+          active && "text-slate-300",
         )}
       >
-        {props.enLabel.toUpperCase()}
+        {enLabel.toUpperCase()}
       </div>
     </Card>
   );
@@ -80,10 +79,6 @@ function Stats() {
   const { selectedPanel, updateSelectedPanel } = useMainpanel("Stats");
   const { wid } = useDashboard("Stats");
   const { data } = useStats({ wid });
-
-  React.useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <div className="flex flex-col gap-y-2 sm:flex-row sm:gap-x-2 md:gap-x-4">

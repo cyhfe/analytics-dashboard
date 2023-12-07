@@ -7,74 +7,111 @@ import { Card } from "../../Components/Card";
 import { Stats } from "./Stats";
 import dayjs from "dayjs";
 import { useDashboard } from ".";
+import { useMainpanel } from "./MainPanel";
+import { SelectedPanel, usePageView, useUniqueVisitors } from "./query";
+import { timeDuration } from "../../utils";
 
 interface Uv {
   date: string;
   count: number;
 }
 
-type CurrentShowData = "uv" | "pv" | "vpv" | "vd";
+export interface Stats {
+  uniqueVisitors: number;
+  totalVisits: number;
+  totalPageViews: number;
+  viewsPerVisit: number;
+  avgVisitDuration: number;
+}
+
+const map = {
+  uniqueVisitors: {
+    ykey: "count",
+  },
+  totalVisits: {
+    ykey: "sessions",
+  },
+  totalPageViews: {
+    ykey: "count",
+  },
+  viewsPerVisit: {
+    ykey: "duration",
+  },
+  avgVisitDuration: {
+    ykey: "duration",
+  },
+};
 
 function Chart() {
   const { wid } = useDashboard("Chart");
+  const { selectedPanel } = useMainpanel("Chart");
+  const { data: uvData } = useUniqueVisitors({ wid });
+  const { data: pvData } = usePageView({ wid });
 
-  const [uv, setUv] = React.useState<Uv[]>();
-  const [currentShowData, setCurrentShowData] =
-    React.useState<CurrentShowData>("uv");
-  const getUv = React.useCallback(async () => {
-    const { uv } = (await fetch(
-      endPoint + "/uv?" + new URLSearchParams({ wid }),
-    )
-      .then((res) => res.json())
-      .catch((err) => console.log(err))) as {
-      uv: {
-        timestamp: number;
-        count: number;
-      }[];
-    };
-    setUv(
-      uv.map((item) => ({
-        count: item.count,
-        date: dayjs(item.timestamp).format("YYYY-MM-DD HH:mm"),
-      })),
-    );
-  }, [wid]);
+  const chartData = React.useMemo(() => {}, []);
 
-  const options = React.useMemo(() => {
-    return {
-      parsing: {
-        xAxisKey: "date",
-        yAxisKey: "count",
-      },
-    };
-  }, []);
+  React.useEffect(() => {
+    console.log(pvData, "11");
+  }, [pvData]);
 
-  const uvData = React.useMemo(() => {
+  const chartDate = React.useMemo(() => {
+    console.log(pvData, "2", selectedPanel);
+
+    let data;
+    switch (selectedPanel) {
+      case "uniqueVisitors":
+        if (uvData) {
+          data = uvData.map((d) => ({ x: d.date, y: d.count }));
+        }
+        break;
+      case "totalVisits":
+        if (pvData) {
+          data = pvData.map((d) => {
+            return {
+              x: d.date,
+              y: d.sessions,
+            };
+          });
+        }
+        break;
+      case "totalPageViews":
+        if (pvData) {
+          data = pvData.map((d) => {
+            return {
+              x: d.date,
+              y: d.count,
+            };
+          });
+        }
+        break;
+      case "avgVisitDuration":
+        if (pvData) {
+          data = pvData.map((d) => {
+            return {
+              x: d.date,
+              y: (d.duration / d.sessions / 1000).toPrecision(2),
+            };
+          });
+        }
+        break;
+      default:
+        break;
+    }
+
+    console.log(data);
     return {
       datasets: [
         {
-          data: uv,
+          data,
         },
       ],
     };
-  }, [uv]);
-
-  const totalUv = React.useMemo(() => {
-    if (!uv) return 0;
-    return uv.reduce((acc, item) => {
-      return (acc += item.count);
-    }, 0);
-  }, [uv]);
+  }, [pvData, selectedPanel, uvData]);
 
   return (
-    <>
-      <Stats uv={totalUv} />
-      <Card className="bg-white p-8">
-        <div className="">
-          <Line className="h-[300px] w-full" options={options} data={uvData} />
-        </div>
-      </Card>
-    </>
+    <Card className="bg-white p-8">
+      <Line className="h-[300px] w-full" data={chartDate} />
+    </Card>
   );
 }
 

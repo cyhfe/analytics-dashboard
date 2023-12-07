@@ -1,4 +1,4 @@
-import { Chart } from "chart.js";
+import { Chart } from "./Chart";
 import { Stats } from "./Stats";
 import { useDashboard } from ".";
 import { createContext } from "@cyhfe/react-ui";
@@ -28,7 +28,7 @@ function MainPanel() {
       updateSelectedPanel={updateSelectedPanel}
     >
       <Stats />
-      {/* <Chart /> */}
+      <Chart />
     </MainPanelProvider>
   );
 }

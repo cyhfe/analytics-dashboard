@@ -22,3 +22,5 @@ export function timeDuration(time: number) {
       : "hh 小时 mm 分 ss 秒";
   return d.format(f);
 }
+
+export {dayjs}
