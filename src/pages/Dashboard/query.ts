@@ -2,6 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { endPoint } from "../../constant";
 import React from "react";
+import { timeDuration } from "../../utils";
 
 interface GetOnlineVisitorsResponse {
   onlineVisitors: number;
@@ -54,5 +55,37 @@ export function useWebsitesOptions(
         }),
       [],
     ),
+  });
+}
+
+export interface Stats {
+  uniqueVisitors: number;
+  totalVisits: number;
+  totalPageViews: number;
+  viewsPerVisit: number;
+  avgVisitDuration: number;
+}
+
+export type SelectedPanel = keyof Stats;
+
+interface UseStatsParams {
+  wid: string;
+}
+
+export function useStats({ wid }: UseStatsParams) {
+  return useQuery({
+    queryKey: ["stats", wid],
+    queryFn: async () =>
+      await axios
+        .get<Stats>(endPoint + "/stats?" + new URLSearchParams({ wid }))
+        .then((res) => {
+          return res.data;
+        }),
+    select: (data: Stats) => {
+      return {
+        ...data,
+        avgVisitDuration: timeDuration(data.avgVisitDuration),
+      };
+    },
   });
 }

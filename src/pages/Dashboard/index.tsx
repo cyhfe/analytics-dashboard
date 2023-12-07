@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Chart } from "./Chart";
 import { Referrers } from "./Referrer";
 import { Pages } from "./Pages";
 import { Card } from "../../Components/Card";
@@ -8,9 +7,10 @@ import { Loading } from "../../Components/Loading";
 import { WebsitesSelect } from "./components/WebsitesSelect";
 import { useOnlineVisitors, useWebsitesOptions } from "./query";
 import { createContext } from "@cyhfe/react-ui";
+import { MainPanel } from "./MainPanel";
 
 interface DashboardContextValue {
-  wid?: string;
+  wid: string;
 }
 
 const [DashboardProvider, useDashboard] =
@@ -26,12 +26,14 @@ function Dashboard() {
   const { data: onlineVisitors, isLoading: isOnlineVisitorsLoading } =
     useOnlineVisitors(selectedWebsite ?? "");
 
+  if (!selectedWebsite) return <div>missing wid</div>;
+
   return (
     <DashboardProvider wid={selectedWebsite}>
       <div className="dashboard flex flex-col gap-y-2">
-        {isGetWebsitesLoading && <Loading />}
-
+        {/* websites select & online visitors */}
         <div className="flex gap-x-4">
+          {isGetWebsitesLoading && <Loading />}
           {options && (
             <WebsitesSelect
               options={options}
@@ -52,28 +54,27 @@ function Dashboard() {
           </div>
         </div>
 
-        {selectedWebsite && (
-          <>
-            <Chart />
+        {/* mainPanel */}
+        <div>
+          <MainPanel />
+        </div>
 
-            <div className="flex gap-x-6">
-              <Card className="basis-1/2 p-4">
-                <Pages />
-              </Card>
-              <Card className="basis-1/2 p-4">
-                <Referrers />
-              </Card>
-            </div>
-            <div className="flex gap-x-6">
-              <Card className="basis-1/2 p-4">
-                <Country />
-              </Card>
-              <Card className="basis-1/2 p-4">
-                <Referrers />
-              </Card>
-            </div>
-          </>
-        )}
+        <div className="flex gap-x-6">
+          <Card className="basis-1/2 p-4">
+            <Pages />
+          </Card>
+          <Card className="basis-1/2 p-4">
+            <Referrers />
+          </Card>
+        </div>
+        <div className="flex gap-x-6">
+          <Card className="basis-1/2 p-4">
+            <Country />
+          </Card>
+          <Card className="basis-1/2 p-4">
+            <Referrers />
+          </Card>
+        </div>
       </div>
     </DashboardProvider>
   );

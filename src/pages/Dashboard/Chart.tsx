@@ -15,7 +15,7 @@ interface Uv {
 
 type CurrentShowData = "uv" | "pv" | "vpv" | "vd";
 
-function Chart(props: { wid: string }) {
+function Chart() {
   const { wid } = useDashboard("Chart");
 
   const [uv, setUv] = React.useState<Uv[]>();
