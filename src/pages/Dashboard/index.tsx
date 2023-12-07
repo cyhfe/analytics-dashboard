@@ -1,84 +1,50 @@
 import { endPoint } from "../../constant";
 import * as React from "react";
-import { Select } from "../../Components/Select";
 import { Chart } from "./Chart";
 import { Referrers } from "./Referrer";
 import { Pages } from "./Pages";
 import { Card } from "../../Components/Card";
 import { Country } from "./Contry";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import axios from "axios";
 import { Loading } from "../../Components/Loading";
 import { WebsitesSelect } from "./components/WebsitesSelect";
+import { useWebsitesOptions } from "./query";
+
 interface Websites {
   domain: string;
   id: string;
 }
 
-function OnlineIcon() {
-  return (
-    <span className="relative flex h-3 w-3">
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-      <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
-    </span>
-  );
-}
-
 function Dashboard() {
-  // const [websites, setWebsites] = React.useState<Websites[]>();
   const [selectedWebsite, setSelectedWebsite] = React.useState<string>();
-  const [online, setOnline] = React.useState<number>();
-
-  // const getWebsites = async () => {
-  //   return await
-  // };
-
-  const getOnline = React.useCallback(async () => {
-    if (!selectedWebsite) return;
-    const res = (await fetch(
-      endPoint + "/online?" + new URLSearchParams({ wid: selectedWebsite }),
-    ).then((res) => res.json())) as {
-      onlineVisitors: number;
-    };
-    setOnline(res.onlineVisitors);
-  }, [selectedWebsite]);
-
-  const queryClient = useQueryClient();
-  const { data: websites, isLoading: isGetWebsitesLoading } = useQuery<
-    Websites[],
-    Error
-  >(
-    "websites",
-    async () =>
+  const { data: options, isLoading: isGetWebsitesLoading } = useQuery({
+    queryKey: ["options"],
+    queryFn: async () =>
       await axios.get<Websites[]>(endPoint + "/websites").then((res) => {
         return res.data;
       }),
-  );
+    onSuccess: (data) => {
+      setSelectedWebsite(data[0].value);
+    },
+    select: React.useCallback(
+      (data: Websites[]) =>
+        data.map((website) => {
+          return {
+            value: website.id,
+            label: website.domain,
+          };
+        }),
+      [],
+    ),
+  });
 
-  React.useEffect(() => {
-    getOnline();
-  }, [getOnline]);
-
-  React.useEffect(() => {
-    if (websites && websites.length) {
-      setSelectedWebsite(websites[0].id);
-    }
-  }, [websites]);
-
-  const options = React.useMemo(() => {
-    if (!websites) return null;
-    return websites.map((website) => {
-      return {
-        value: website.id,
-        label: website.domain,
-      };
-    });
-  }, [websites]);
+  const { data: onlineVisitors, isLoading: isOnlineVisitorsLoading } =
+    useWebsitesOptions(selectedWebsite ?? "");
 
   return (
     <div className="dashboard flex flex-col gap-y-2">
       {/* select websites */}
-
       {isGetWebsitesLoading && <Loading />}
       {options && (
         <div className="flex gap-x-4">
@@ -91,7 +57,11 @@ function Dashboard() {
           <div className="flex items-center gap-x-3">
             <OnlineIcon />
             <span>
-              在线: <span className="font-medium">{online ?? "?"}</span>
+              在线:{" "}
+              <span className="font-medium">
+                {isOnlineVisitorsLoading && <Loading />}
+                {onlineVisitors}
+              </span>
             </span>
           </div>
         </div>
@@ -120,6 +90,15 @@ function Dashboard() {
         </>
       )}
     </div>
+  );
+}
+
+function OnlineIcon() {
+  return (
+    <span className="relative flex h-3 w-3">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+      <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
+    </span>
   );
 }
 
