@@ -6,14 +6,6 @@ import { useStats } from "./query";
 import { useDashboard } from ".";
 import { cn } from "../../utils";
 
-interface Stats {
-  uniqueVisitors: number;
-  totalVisits: number;
-  totalPageViews: number;
-  viewsPerVisit: number;
-  avgVisitDuration: number;
-}
-
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   value: number | string;
   enLabel: string;

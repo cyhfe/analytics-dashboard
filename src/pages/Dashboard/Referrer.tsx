@@ -1,21 +1,14 @@
 import * as React from "react";
-import { endPoint } from "../../constant";
 import { timeDuration } from "../../utils";
 import { Button } from "./components/Button";
-interface Referrer {
-  referrer: string;
-  duration: number;
-  count: number;
-  sessions: number;
-}
+import { useReferrers } from "./query";
+import { useDashboard } from ".";
 
 type Active = "count" | "duration" | "sessions";
 
-function Referrers(props: { wid: string }) {
-  const { wid } = props;
-
-  const [referrers, setReferrers] = React.useState<Referrer[]>();
-
+function Referrers() {
+  const { wid } = useDashboard("Referrers");
+  const { data: referrers } = useReferrers({ wid });
   const [active, setActive] = React.useState<Active>("count");
 
   const sortReferrers = React.useMemo(() => {
@@ -23,21 +16,6 @@ function Referrers(props: { wid: string }) {
       return b[active] - a[active];
     });
   }, [active, referrers]);
-
-  const getReferrers = React.useCallback(async () => {
-    const { referrers } = (await fetch(
-      endPoint + "/referrers?" + new URLSearchParams({ wid }),
-    )
-      .then((res) => res.json())
-      .catch((err) => console.log(err))) as {
-      referrers: Referrer[];
-    };
-    setReferrers(referrers);
-  }, [wid]);
-
-  React.useEffect(() => {
-    getReferrers();
-  }, [getReferrers]);
 
   return (
     <div className="prose">

@@ -1,21 +1,15 @@
 import * as React from "react";
-import { endPoint } from "../../constant";
 import { timeDuration } from "../../utils";
 import { Button } from "./components/Button";
-
-interface Country {
-  country: string;
-  duration: number;
-  count: number;
-  sessions: number;
-}
+import { useDashboard } from ".";
+import { useCountries } from "./query";
 
 type Active = "count" | "duration" | "sessions";
 
-function Country(props: { wid: string }) {
-  const { wid } = props;
+function Country() {
+  const { wid } = useDashboard("Country");
 
-  const [countries, setCountries] = React.useState<Country[]>();
+  const { data: countries } = useCountries({ wid });
 
   const [active, setActive] = React.useState<Active>("count");
 
@@ -24,21 +18,6 @@ function Country(props: { wid: string }) {
       return b[active] - a[active];
     });
   }, [active, countries]);
-
-  const getCountries = React.useCallback(async () => {
-    const { countries } = (await fetch(
-      endPoint + "/countries?" + new URLSearchParams({ wid }),
-    )
-      .then((res) => res.json())
-      .catch((err) => console.log(err))) as {
-      countries: Country[];
-    };
-    setCountries(countries);
-  }, [wid]);
-
-  React.useEffect(() => {
-    getCountries();
-  }, [getCountries]);
 
   return (
     <div className="prose">

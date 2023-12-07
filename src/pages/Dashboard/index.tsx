@@ -8,6 +8,8 @@ import { WebsitesSelect } from "./components/WebsitesSelect";
 import { useOnlineVisitors, useWebsitesOptions } from "./query";
 import { createContext } from "@cyhfe/react-ui";
 import { MainPanel } from "./MainPanel";
+import { OnlineIcon } from "./components/OnlineIcon";
+import { Device } from "./Device";
 
 interface DashboardContextValue {
   wid: string;
@@ -72,20 +74,11 @@ function Dashboard() {
             <Country />
           </Card>
           <Card className="basis-1/2 p-4">
-            <Referrers />
+            <Device />
           </Card>
         </div>
       </div>
     </DashboardProvider>
-  );
-}
-
-function OnlineIcon() {
-  return (
-    <span className="relative flex h-3 w-3">
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-      <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
-    </span>
   );
 }
 

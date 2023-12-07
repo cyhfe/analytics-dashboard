@@ -173,3 +173,87 @@ export function usePages({ wid }: UsePageParams) {
         }),
   });
 }
+
+interface Referrer {
+  referrer: string;
+  duration: number;
+  count: number;
+  sessions: number;
+}
+
+type ReferrerResponse = {
+  referrers: Referrer[];
+};
+
+interface UseReferrersParams {
+  wid: string;
+}
+
+export function useReferrers({ wid }: UseReferrersParams) {
+  return useQuery({
+    queryKey: ["referrers", wid],
+    queryFn: async () =>
+      await axios
+        .get<ReferrerResponse>(
+          endPoint + "/referrers?" + new URLSearchParams({ wid }),
+        )
+        .then((res) => {
+          return res.data.referrers;
+        }),
+  });
+}
+
+interface Country {
+  country: string;
+  duration: number;
+  count: number;
+  sessions: number;
+}
+type CountryResponse = {
+  countries: Country[];
+};
+
+interface UseCountryParams {
+  wid: string;
+}
+
+export function useCountries({ wid }: UseCountryParams) {
+  return useQuery({
+    queryKey: ["countries", wid],
+    queryFn: async () =>
+      await axios
+        .get<CountryResponse>(
+          endPoint + "/countries?" + new URLSearchParams({ wid }),
+        )
+        .then((res) => {
+          return res.data.countries;
+        }),
+  });
+}
+
+type DeviceInfo = {
+  name: string;
+  count: number;
+};
+
+export interface Devices {
+  browser: DeviceInfo[];
+  device: DeviceInfo[];
+  os: DeviceInfo[];
+}
+
+interface UseDevicesParams {
+  wid: string;
+}
+
+export function useDevices({ wid }: UseDevicesParams) {
+  return useQuery({
+    queryKey: ["devices", wid],
+    queryFn: async () =>
+      await axios
+        .get<Devices>(endPoint + "/devices?" + new URLSearchParams({ wid }))
+        .then((res) => {
+          return res.data;
+        }),
+  });
+}
