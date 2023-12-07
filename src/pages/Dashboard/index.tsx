@@ -9,7 +9,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { Loading } from "../../Components/Loading";
 import { WebsitesSelect } from "./components/WebsitesSelect";
-import { useWebsitesOptions } from "./query";
+import { useOnlineVisitors, useWebsitesOptions } from "./query";
 
 interface Websites {
   domain: string;
@@ -18,29 +18,12 @@ interface Websites {
 
 function Dashboard() {
   const [selectedWebsite, setSelectedWebsite] = React.useState<string>();
-  const { data: options, isLoading: isGetWebsitesLoading } = useQuery({
-    queryKey: ["options"],
-    queryFn: async () =>
-      await axios.get<Websites[]>(endPoint + "/websites").then((res) => {
-        return res.data;
-      }),
-    onSuccess: (data) => {
-      setSelectedWebsite(data[0].value);
-    },
-    select: React.useCallback(
-      (data: Websites[]) =>
-        data.map((website) => {
-          return {
-            value: website.id,
-            label: website.domain,
-          };
-        }),
-      [],
-    ),
-  });
+  const { data: options, isLoading: isGetWebsitesLoading } = useWebsitesOptions(
+    (data) => setSelectedWebsite(data[0].value),
+  );
 
   const { data: onlineVisitors, isLoading: isOnlineVisitorsLoading } =
-    useWebsitesOptions(selectedWebsite ?? "");
+    useOnlineVisitors(selectedWebsite ?? "");
 
   return (
     <div className="dashboard flex flex-col gap-y-2">
