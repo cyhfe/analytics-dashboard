@@ -18,12 +18,16 @@ function Item(props: ItemProps) {
   return (
     <Card
       className={cn(
-        "prose cursor-pointer p-4  transition  hover:shadow-xl",
-        active && "bg-slate-950 text-white ",
+        "prose cursor-pointer border  p-4 transition hover:border-slate-400 hover:shadow",
+        active && "bg-[#22272e] text-white ",
       )}
       {...rest}
     >
-      <h1 className={cn("mb-2 transition", active && "text-white")}>{value}</h1>
+      <h1
+        className={cn("mb-2 text-[#22272e] transition", active && "text-white")}
+      >
+        {value}
+      </h1>
       <div
         className={cn(
           "mb-1 text-sm text-slate-600 transition",
@@ -68,9 +72,9 @@ const map = {
 };
 
 function Stats() {
-  const { selectedPanel, updateSelectedPanel } = useMainpanel("Stats");
+  const { selectedPanel, updateSelectedPanel, filter } = useMainpanel("Stats");
   const { wid } = useDashboard("Stats");
-  const { data } = useStats({ wid });
+  const { data } = useStats({ wid, filter });
 
   return (
     <div className="flex flex-col gap-y-2 sm:flex-row sm:gap-x-2 md:gap-x-4">

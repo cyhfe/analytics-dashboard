@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cyhfe/react-ui": "^0.0.19",
+    "@cyhfe/react-ui": "^0.0.20",
     "axios": "^1.6.2",
     "chart.js": "^4.4.1",
     "clsx": "^2.0.0",

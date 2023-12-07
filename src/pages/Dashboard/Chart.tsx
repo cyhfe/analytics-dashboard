@@ -17,9 +17,10 @@ export interface Stats {
 
 function Chart() {
   const { wid } = useDashboard("Chart");
-  const { selectedPanel } = useMainpanel("Chart");
-  const { data: uvData } = useUniqueVisitors({ wid });
-  const { data: pvData } = usePageView({ wid });
+  const { selectedPanel, filter } = useMainpanel("Chart");
+
+  const { data: uvData } = useUniqueVisitors({ wid, filter });
+  const { data: pvData } = usePageView({ wid, filter });
 
   const chartDate = React.useMemo(() => {
     let data;
@@ -73,8 +74,10 @@ function Chart() {
   }, [pvData, selectedPanel, uvData]);
 
   return (
-    <Card className="flex items-center justify-center bg-white p-8">
-      <Line data={chartDate} />
+    <Card className="flex items-center justify-center bg-white">
+      <div className="relative my-8 w-11/12">
+        <Line data={chartDate} />
+      </div>
     </Card>
   );
 }

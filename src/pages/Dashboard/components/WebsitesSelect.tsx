@@ -25,7 +25,7 @@ const WebsitesSelect = React.forwardRef<HTMLDivElement, SelectProps>(
       <SelectRoot ref={forwardRef} {...rest} className="font-semibold">
         <SelectTrigger className="flex min-w-[90px] items-center justify-between gap-x-2 text-left">
           <SelectLabel />
-          <FaAngleDown />
+          <FaAngleDown className="text-slate-500" />
         </SelectTrigger>
 
         <SelectPopup

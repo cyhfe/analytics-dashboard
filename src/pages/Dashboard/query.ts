@@ -68,16 +68,19 @@ export interface Stats {
 
 export type SelectedPanel = keyof Stats;
 
+export type Filter = "day" | "week" | "month" | "year" | "alltime";
+
 interface UseStatsParams {
   wid: string;
+  filter: Filter;
 }
 
-export function useStats({ wid }: UseStatsParams) {
+export function useStats({ wid, filter }: UseStatsParams) {
   return useQuery({
-    queryKey: ["stats", wid],
+    queryKey: ["stats", wid, filter],
     queryFn: async () =>
       await axios
-        .get<Stats>(endPoint + "/stats?" + new URLSearchParams({ wid }))
+        .get<Stats>(endPoint + "/stats?" + new URLSearchParams({ wid, filter }))
         .then((res) => {
           return res.data;
         }),
@@ -92,6 +95,7 @@ export function useStats({ wid }: UseStatsParams) {
 
 interface UseUniqueVisitorsParams {
   wid: string;
+  filter: Filter;
 }
 
 type UvResponse = {
@@ -101,12 +105,14 @@ type UvResponse = {
   }[];
 };
 
-export function useUniqueVisitors({ wid }: UseUniqueVisitorsParams) {
+export function useUniqueVisitors({ wid, filter }: UseUniqueVisitorsParams) {
   return useQuery({
-    queryKey: ["uv", wid],
+    queryKey: ["uv", wid, filter],
     queryFn: async () =>
       await axios
-        .get<UvResponse>(endPoint + "/uv?" + new URLSearchParams({ wid }))
+        .get<UvResponse>(
+          endPoint + "/uv?" + new URLSearchParams({ wid, filter }),
+        )
         .then((res) => {
           return res.data;
         }),
@@ -124,6 +130,7 @@ export function useUniqueVisitors({ wid }: UseUniqueVisitorsParams) {
 
 interface UsePageViewParams {
   wid: string;
+  filter: Filter;
 }
 
 interface PageViewResponse {
@@ -135,12 +142,14 @@ interface PageViewResponse {
   }[];
 }
 
-export function usePageView({ wid }: UsePageViewParams) {
+export function usePageView({ wid, filter }: UsePageViewParams) {
   return useQuery({
-    queryKey: ["pageview", wid],
+    queryKey: ["pageview", wid, filter],
     queryFn: async () =>
       await axios
-        .get<PageViewResponse>(endPoint + "/pv?" + new URLSearchParams({ wid }))
+        .get<PageViewResponse>(
+          endPoint + "/pv?" + new URLSearchParams({ wid, filter }),
+        )
         .then((res) => {
           return res.data.pv;
         }),

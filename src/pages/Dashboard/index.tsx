@@ -32,7 +32,7 @@ function Dashboard() {
 
   return (
     <DashboardProvider wid={selectedWebsite}>
-      <div className="dashboard flex flex-col gap-y-2">
+      <div className="dashboard flex flex-col gap-y-6">
         {/* websites select & online visitors */}
         <div className="flex gap-x-4">
           {isGetWebsitesLoading && <Loading />}
@@ -57,9 +57,8 @@ function Dashboard() {
         </div>
 
         {/* mainPanel */}
-        <div>
-          <MainPanel />
-        </div>
+
+        <MainPanel />
 
         <div className="flex gap-x-6">
           <Card className="basis-1/2 p-4">
