@@ -135,7 +135,7 @@ interface UsePageViewParams {
 
 interface PageViewResponse {
   pv: {
-    date: string;
+    date: number;
     count: number;
     duration: number;
     sessions: number;

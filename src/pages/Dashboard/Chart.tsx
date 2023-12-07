@@ -73,10 +73,38 @@ function Chart() {
     };
   }, [pvData, selectedPanel, uvData]);
 
+  // const options = React.useMemo(() => {
+  //   return {
+  //     scales: {
+  //       x: {
+
+  //       }
+  //       // x: [
+  //       //   {
+  //       //     type: "time",
+  //       //   },
+  //       // ],
+  //     },
+  //   };
+  // }, []);
+
   return (
     <Card className="flex items-center justify-center bg-white">
       <div className="relative my-8 w-11/12">
-        <Line data={chartDate} />
+        <Line
+          data={chartDate}
+          options={{
+            scales: {
+              x: {
+                type: "time",
+                time: {
+                  unit: "day",
+                  displayFormats: {},
+                },
+              },
+            },
+          }}
+        />
       </div>
     </Card>
   );

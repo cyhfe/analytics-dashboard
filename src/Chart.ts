@@ -6,7 +6,9 @@ import {
   LineElement,
   Tooltip,
   BarElement,
+  TimeScale,
 } from "chart.js";
+import "chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm";
 
 ChartJS.register(
   CategoryScale,
@@ -14,7 +16,8 @@ ChartJS.register(
   PointElement,
   LineElement,
   BarElement,
+  Tooltip,
+  TimeScale,
   // Title,
-  Tooltip
   // Legend
 );
