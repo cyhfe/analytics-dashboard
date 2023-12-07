@@ -31,14 +31,14 @@ const WebsitesSelect = React.forwardRef<HTMLDivElement, SelectProps>(
         <SelectPopup
           placement="bottom-start"
           keepMounted
-          className="flex max-h-[200px] min-w-[120px] flex-col overflow-auto  rounded bg-white shadow-lg"
+          className="flex max-h-[200px] min-w-[120px] flex-col gap-y-1 overflow-auto rounded-lg bg-white p-2 shadow-2xl"
         >
           {options.map((option) => {
             return (
               <SelectOption
                 key={option.value}
                 value={option.value}
-                className="px-3 py-2 text-left text-slate-500 hover:!bg-slate-200 data-[selected=true]:bg-slate-100  data-[selected=true]:font-medium  data-[selected=true]:text-slate-800"
+                className=" rounded-lg px-3 py-2 text-left text-slate-500 hover:bg-slate-100 hover:text-black data-[selected=true]:bg-slate-100 data-[selected=true]:text-black"
               >
                 {option.label}
               </SelectOption>

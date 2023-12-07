@@ -1,23 +1,24 @@
-import { endPoint } from "../../constant";
 import * as React from "react";
 import { Chart } from "./Chart";
 import { Referrers } from "./Referrer";
 import { Pages } from "./Pages";
 import { Card } from "../../Components/Card";
 import { Country } from "./Contry";
-import { useQuery } from "react-query";
-import axios from "axios";
 import { Loading } from "../../Components/Loading";
 import { WebsitesSelect } from "./components/WebsitesSelect";
 import { useOnlineVisitors, useWebsitesOptions } from "./query";
+import { createContext } from "@cyhfe/react-ui";
 
-interface Websites {
-  domain: string;
-  id: string;
+interface DashboardContextValue {
+  wid?: string;
 }
+
+const [DashboardProvider, useDashboard] =
+  createContext<DashboardContextValue>("Dashboard");
 
 function Dashboard() {
   const [selectedWebsite, setSelectedWebsite] = React.useState<string>();
+
   const { data: options, isLoading: isGetWebsitesLoading } = useWebsitesOptions(
     (data) => setSelectedWebsite(data[0].value),
   );
@@ -26,53 +27,55 @@ function Dashboard() {
     useOnlineVisitors(selectedWebsite ?? "");
 
   return (
-    <div className="dashboard flex flex-col gap-y-2">
-      {/* select websites */}
-      {isGetWebsitesLoading && <Loading />}
-      {options && (
+    <DashboardProvider wid={selectedWebsite}>
+      <div className="dashboard flex flex-col gap-y-2">
+        {isGetWebsitesLoading && <Loading />}
+
         <div className="flex gap-x-4">
-          <WebsitesSelect
-            options={options}
-            placeholder="select a website"
-            onSelectedChange={(v) => setSelectedWebsite(v as string)}
-            selectedValue={selectedWebsite}
-          />
+          {options && (
+            <WebsitesSelect
+              options={options}
+              placeholder="select a website"
+              onSelectedChange={(v) => setSelectedWebsite(v as string)}
+              selectedValue={selectedWebsite}
+            />
+          )}
           <div className="flex items-center gap-x-3">
             <OnlineIcon />
             <span>
-              在线:{" "}
+              在线:
               <span className="font-medium">
                 {isOnlineVisitorsLoading && <Loading />}
-                {onlineVisitors}
+                {onlineVisitors && onlineVisitors}
               </span>
             </span>
           </div>
         </div>
-      )}
 
-      {selectedWebsite && (
-        <>
-          <Chart wid={selectedWebsite} />
+        {selectedWebsite && (
+          <>
+            <Chart />
 
-          <div className="flex gap-x-6">
-            <Card className="basis-1/2 p-4">
-              <Pages wid={selectedWebsite} />
-            </Card>
-            <Card className="basis-1/2 p-4">
-              <Referrers wid={selectedWebsite} />
-            </Card>
-          </div>
-          <div className="flex gap-x-6">
-            <Card className="basis-1/2 p-4">
-              <Country wid={selectedWebsite} />
-            </Card>
-            <Card className="basis-1/2 p-4">
-              <Referrers wid={selectedWebsite} />
-            </Card>
-          </div>
-        </>
-      )}
-    </div>
+            <div className="flex gap-x-6">
+              <Card className="basis-1/2 p-4">
+                <Pages />
+              </Card>
+              <Card className="basis-1/2 p-4">
+                <Referrers />
+              </Card>
+            </div>
+            <div className="flex gap-x-6">
+              <Card className="basis-1/2 p-4">
+                <Country />
+              </Card>
+              <Card className="basis-1/2 p-4">
+                <Referrers />
+              </Card>
+            </div>
+          </>
+        )}
+      </div>
+    </DashboardProvider>
   );
 }
 
@@ -85,4 +88,4 @@ function OnlineIcon() {
   );
 }
 
-export { Dashboard };
+export { Dashboard, useDashboard };

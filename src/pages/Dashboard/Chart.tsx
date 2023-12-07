@@ -6,6 +6,7 @@ import { Card } from "../../Components/Card";
 
 import { Stats } from "./Stats";
 import dayjs from "dayjs";
+import { useDashboard } from ".";
 
 interface Uv {
   date: string;
@@ -15,7 +16,7 @@ interface Uv {
 type CurrentShowData = "uv" | "pv" | "vpv" | "vd";
 
 function Chart(props: { wid: string }) {
-  const { wid } = props;
+  const { wid } = useDashboard("Chart");
 
   const [uv, setUv] = React.useState<Uv[]>();
   const [currentShowData, setCurrentShowData] =
@@ -38,10 +39,6 @@ function Chart(props: { wid: string }) {
       })),
     );
   }, [wid]);
-
-  // React.useEffect(() => {
-  //   getUv();
-  // }, [getUv]);
 
   const options = React.useMemo(() => {
     return {
