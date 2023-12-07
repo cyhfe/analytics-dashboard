@@ -1,20 +1,15 @@
 import * as React from "react";
-import { endPoint } from "../../constant";
 import { timeDuration } from "../../utils";
 import { Button } from "./components/Button";
-interface Page {
-  pathname: string;
-  duration: number;
-  count: number;
-  sessions: number;
-}
+import { usePages } from "./query";
+import { useDashboard } from ".";
 
 type Active = "count" | "duration" | "sessions";
 
-function Pages(props: { wid: string }) {
-  const { wid } = props;
+function Pages() {
+  const { wid } = useDashboard("Pages");
 
-  const [pages, setPages] = React.useState<Page[]>();
+  const { data: pages } = usePages({ wid });
 
   const [active, setActive] = React.useState<Active>("count");
 
@@ -23,21 +18,6 @@ function Pages(props: { wid: string }) {
       return b[active] - a[active];
     });
   }, [active, pages]);
-
-  const getPages = React.useCallback(async () => {
-    const { pages } = (await fetch(
-      endPoint + "/pages?" + new URLSearchParams({ wid }),
-    )
-      .then((res) => res.json())
-      .catch((err) => console.log(err))) as {
-      pages: Page[];
-    };
-    setPages(pages);
-  }, [wid]);
-
-  React.useEffect(() => {
-    getPages();
-  }, [getPages]);
 
   return (
     <div className="prose">

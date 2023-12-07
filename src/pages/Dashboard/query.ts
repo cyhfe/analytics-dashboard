@@ -144,6 +144,32 @@ export function usePageView({ wid }: UsePageViewParams) {
         .then((res) => {
           return res.data.pv;
         }),
-    // select: (data: PageViewResponse) => {},
+  });
+}
+
+interface Page {
+  pathname: string;
+  duration: number;
+  count: number;
+  sessions: number;
+}
+
+type PageResponse = {
+  pages: Page[];
+};
+
+interface UsePageParams {
+  wid: string;
+}
+
+export function usePages({ wid }: UsePageParams) {
+  return useQuery({
+    queryKey: ["pages", wid],
+    queryFn: async () =>
+      await axios
+        .get<PageResponse>(endPoint + "/pages?" + new URLSearchParams({ wid }))
+        .then((res) => {
+          return res.data.pages;
+        }),
   });
 }
