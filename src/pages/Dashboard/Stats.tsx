@@ -4,7 +4,6 @@ import { Card } from "../../Components/Card";
 import { useMainpanel } from "./MainPanel";
 import { useStats } from "./query";
 import { useDashboard } from ".";
-import { active } from "d3";
 import { cn } from "../../utils";
 
 interface Stats {
