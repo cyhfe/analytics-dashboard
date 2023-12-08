@@ -2,7 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { endPoint } from "../../constant";
 import React from "react";
-import { dayjs, timeDuration } from "../../utils";
+import { timeDuration } from "../../utils";
 
 interface GetOnlineVisitorsResponse {
   onlineVisitors: number;
@@ -114,17 +114,17 @@ export function useUniqueVisitors({ wid, filter }: UseUniqueVisitorsParams) {
           endPoint + "/uv?" + new URLSearchParams({ wid, filter }),
         )
         .then((res) => {
-          return res.data;
+          return res.data.uv;
         }),
-    select: (data: UvResponse) => {
-      const uv = data.uv;
-      return uv.map((item) => {
-        return {
-          count: item.count,
-          date: dayjs(item.timestamp).format("YYYY-MM-DD HH:mm"),
-        };
-      });
-    },
+    // select: (data: UvResponse) => {
+    //   const uv = data.uv;
+    //   return uv.map((item) => {
+    //     return {
+    //       count: item.count,
+    //       date: dayjs(item.timestamp).format("YYYY-MM-DD HH:mm"),
+    //     };
+    //   });
+    // },
   });
 }
 
@@ -135,7 +135,7 @@ interface UsePageViewParams {
 
 interface PageViewResponse {
   pv: {
-    date: number;
+    timestamp: number;
     count: number;
     duration: number;
     sessions: number;
@@ -263,6 +263,41 @@ export function useDevices({ wid }: UseDevicesParams) {
         .get<Devices>(endPoint + "/devices?" + new URLSearchParams({ wid }))
         .then((res) => {
           return res.data;
+        }),
+  });
+}
+
+interface UseChartsParams {
+  wid: string;
+  filter: Filter;
+}
+
+type GetChartsResponse = {
+  uv: {
+    timestamp: string;
+    amt: string;
+  }[];
+  pv: {
+    timestamp: string;
+    amt: string;
+    count: string;
+    duration: string;
+  }[];
+};
+
+export function useCharts({ wid, filter }: UseChartsParams) {
+  return useQuery({
+    queryKey: ["charts", wid, filter],
+    queryFn: async () =>
+      await axios
+        .get<GetChartsResponse>(
+          endPoint + "/charts?" + new URLSearchParams({ wid, filter }),
+        )
+        .then((res) => {
+          return {
+            pv: res.data.pv,
+            uv: res.data.uv,
+          };
         }),
   });
 }

@@ -97,6 +97,12 @@ function Stats() {
         onClick={() => updateSelectedPanel("totalPageViews")}
       />
       <Item
+        active={selectedPanel === "viewsPerVisit"}
+        value={data?.viewsPerVisit.toPrecision(2) ?? 0}
+        {...map.viewsPerVisit}
+        onClick={() => updateSelectedPanel("viewsPerVisit")}
+      />
+      <Item
         active={selectedPanel === "avgVisitDuration"}
         value={data?.avgVisitDuration ?? 0}
         {...map.avgVisitDuration}
