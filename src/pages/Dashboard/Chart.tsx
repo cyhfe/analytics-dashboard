@@ -111,11 +111,15 @@ function Chart() {
             </defs>
             <XAxis
               dataKey="x"
-              tickFormatter={(v) => dayjs(v).format("MM-DD")}
+              tickFormatter={(v) => dayjs(v).format("MM-DD HH:mm")}
             />
             <YAxis dataKey="y" />
             <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip />
+            <Tooltip
+              labelFormatter={(value) => {
+                return dayjs(value).format("YYYY-MM-DD HH:mm");
+              }}
+            />
             <Area
               type="monotone"
               dataKey="y"

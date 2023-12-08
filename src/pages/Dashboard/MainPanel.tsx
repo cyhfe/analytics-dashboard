@@ -41,7 +41,7 @@ const options = [
 function MainPanel() {
   const [filter, setFilter] = React.useState<Filter>("alltime");
   const [selectedPanel, setSelectedPanel] =
-    React.useState<SelectedPanel>("totalPageViews");
+    React.useState<SelectedPanel>("uniqueVisitors");
 
   const updateSelectedPanel = React.useCallback(
     (selectedPanel: SelectedPanel) => {
