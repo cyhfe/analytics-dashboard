@@ -1,8 +1,7 @@
 import * as React from "react";
-import { timeDuration } from "../../utils";
 import { Button } from "./components/Button";
 import { useDashboard } from ".";
-import { Devices, useCountries, useDevices } from "./query";
+import { Devices, useDevices } from "./query";
 
 type Active = keyof Devices;
 
