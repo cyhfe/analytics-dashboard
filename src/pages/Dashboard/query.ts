@@ -274,11 +274,11 @@ interface UseChartsParams {
 
 type GetChartsResponse = {
   uv: {
-    timestamp: string;
+    timestamp: number;
     amt: string;
   }[];
   pv: {
-    timestamp: string;
+    timestamp: number;
     amt: string;
     count: string;
     duration: string;
