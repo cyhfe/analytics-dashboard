@@ -35,7 +35,7 @@ function Country() {
               onClick={() => setActive("sessions")}
               active={active === "sessions"}
             >
-              访问次数
+              用户数
             </Button>
             <Button
               onClick={() => setActive("duration")}
