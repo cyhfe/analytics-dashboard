@@ -8,8 +8,8 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  restart: always
   server:
+    restart: always
     build:
       context: .
     environment:
