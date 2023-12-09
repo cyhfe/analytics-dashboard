@@ -2,15 +2,13 @@ name: deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v3
-    - name: docker compose
-      run: docker compose -p analytics-dashboard up --build -d
+      - uses: actions/checkout@v3
+      - name: docker compose
+        run: docker compose -p analytics-dashboard up --build -d
