@@ -15,3 +15,7 @@
 
 [script](https://github.com/cyhfe/analytics-web)
 
+## screenshot
+
+![analytics icyh me_dashboard](https://github.com/cyhfe/analytics-dashboard/assets/78200034/27f2d0af-d4bd-43e3-add7-ac76152f1ad9)
+
