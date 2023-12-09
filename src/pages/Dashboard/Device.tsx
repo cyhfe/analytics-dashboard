@@ -21,7 +21,7 @@ function Device() {
   return (
     <div className="prose">
       <div className="mb-2 flex items-center justify-between">
-        <h4 className="m-0">Region</h4>
+        <h4 className="m-0">Device</h4>
         <div>
           <div className="inline-flex  items-center justify-center rounded-lg bg-slate-100 p-1">
             <Button

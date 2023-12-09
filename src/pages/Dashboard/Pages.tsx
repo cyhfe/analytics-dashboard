@@ -29,13 +29,13 @@ function Pages() {
               onClick={() => setActive("count")}
               active={active === "count"}
             >
-              点击量
+              浏览量
             </Button>
             <Button
               onClick={() => setActive("sessions")}
               active={active === "sessions"}
             >
-              用户量
+              访问次数
             </Button>
             <Button
               onClick={() => setActive("duration")}
