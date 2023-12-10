@@ -3,13 +3,13 @@ import { Referrers } from "./Referrer";
 import { Pages } from "./Pages";
 import { Card } from "../../Components/Card";
 import { Country } from "./Contry";
-import { Loading } from "../../Components/Loading";
 import { WebsitesSelect } from "./components/WebsitesSelect";
 import { useOnlineVisitors, useWebsitesOptions } from "./query";
 import { createContext } from "@cyhfe/react-ui";
 import { MainPanel } from "./MainPanel";
 import { OnlineIcon } from "./components/OnlineIcon";
 import { Device } from "./Device";
+import { Loading } from "../../Components/Loading";
 
 interface DashboardContextValue {
   wid: string;
@@ -21,21 +21,19 @@ const [DashboardProvider, useDashboard] =
 function Dashboard() {
   const [selectedWebsite, setSelectedWebsite] = React.useState<string>();
 
-  const { data: options, isLoading: isGetWebsitesLoading } = useWebsitesOptions(
-    (data) => setSelectedWebsite(data[0].value),
+  const { data: options, isLoading } = useWebsitesOptions((data) =>
+    setSelectedWebsite(data[0].value),
   );
 
-  const { data: onlineVisitors, isLoading: isOnlineVisitorsLoading } =
-    useOnlineVisitors(selectedWebsite ?? "");
+  const { data: onlineVisitors } = useOnlineVisitors(selectedWebsite ?? "");
 
+  if (isLoading) return <Loading />;
   if (!selectedWebsite) return <div>missing wid</div>;
 
   return (
     <DashboardProvider wid={selectedWebsite}>
       <div className="dashboard flex flex-col gap-y-6">
-        {/* websites select & online visitors */}
         <div className="flex gap-x-4">
-          {isGetWebsitesLoading && <Loading />}
           {options && (
             <WebsitesSelect
               options={options}
@@ -49,14 +47,11 @@ function Dashboard() {
             <span>
               在线:
               <span className="font-medium">
-                {isOnlineVisitorsLoading && <Loading />}
                 {onlineVisitors && onlineVisitors}
               </span>
             </span>
           </div>
         </div>
-
-        {/* mainPanel */}
 
         <MainPanel />
 
